@@ -35,42 +35,137 @@
   </section>
 
   <main class="container page-home">
-    <section class="panel">
-      <h2>這本書適合誰？</h2>
-      <ul class="feature-list">
-        <li>PowerShell 初學者</li>
-        <li>Windows 使用者</li>
-        <li>想學命令列與自動化的人</li>
-        <li>想從日常操作慢慢進入腳本世界的人</li>
-      </ul>
-    </section>
+    <div class="home-grid">
+      <div>
+        <section class="panel">
+          <h2>這本書適合誰？</h2>
+          <ul class="feature-list">
+            <li>PowerShell 完全初學者</li>
+            <li>Windows 日常使用者</li>
+            <li>想學命令列與自動化的人</li>
+            <li>想從日常操作慢慢進入腳本世界的人</li>
+          </ul>
+        </section>
 
-    <section class="panel">
-      <h2>學習路線</h2>
-      <ol class="roadmap">
-        <li>先知道 PowerShell 是什麼</li>
-        <li>先熟悉基本指令與物件觀念</li>
-        <li>練會常用檔案與路徑操作</li>
-        <li>再學變數、條件、迴圈</li>
-        <li>最後進入簡單自動化與腳本</li>
-      </ol>
-    </section>
+        <section class="panel">
+          <h2>學習路線</h2>
+          <ol class="roadmap">
+            <li><span class="roadmap-tag done">完成</span> 知道 PowerShell 是什麼</li>
+            <li><span class="roadmap-tag done">完成</span> 認識介面、指令、物件觀念</li>
+            <li><span class="roadmap-tag">進行中</span> 練會基本操作與常用指令</li>
+            <li><span class="roadmap-tag upcoming">即將</span> 學變數、條件、迴圈</li>
+            <li><span class="roadmap-tag upcoming">即將</span> 進入腳本與自動化</li>
+          </ol>
+        </section>
 
-    <section id="chapters" class="panel">
-      <h2>章節列表</h2>
-      <div class="chapter-grid">
-        <a class="card" href="chapters/chapter1.html"><strong>第 1 章</strong><span>PowerShell 是什麼？</span></a>
-        <a class="card" href="chapters/chapter2.html"><strong>第 2 章</strong><span>五分鐘認識核心</span></a>
-        <a class="card" href="chapters/chapter3.html"><strong>第 3 章</strong><span>開始操作</span></a>
-        <a class="card" href="chapters/chapter4.html"><strong>第 4 章</strong><span>檔案與路徑操作</span></a>
-        <a class="card" href="chapters/chapter5.html"><strong>第 5 章</strong><span>常用指令實戰</span></a>
-        <a class="card" href="chapters/chapter6.html"><strong>第 6 章</strong><span>變數與資料處理</span></a>
-        <a class="card" href="chapters/chapter7.html"><strong>第 7 章</strong><span>條件與迴圈</span></a>
-        <a class="card" href="chapters/chapter8.html"><strong>第 8 章</strong><span>腳本入門</span></a>
-        <a class="card" href="chapters/chapter9.html"><strong>第 9 章</strong><span>小自動化</span></a>
-        <a class="card" href="chapters/chapter10.html"><strong>第 10 章</strong><span>持續練習慢慢變達人</span></a>
+        <section class="panel">
+          <h2>你會學到什麼？</h2>
+          <ul class="feature-list">
+            <li>PowerShell 的物件觀念與管線操作</li>
+            <li>常用的檔案、路徑、系統查詢指令</li>
+            <li>變數、陣列、條件判斷、迴圈</li>
+            <li>撰寫與執行 .ps1 腳本</li>
+            <li>實用的小自動化範例</li>
+          </ul>
+        </section>
       </div>
-    </section>
+
+      <section id="chapters" class="panel toc-panel">
+        <h2>章節目錄</h2>
+        <ol class="toc-list">
+          <li class="toc-item done">
+            <a href="chapters/chapter1.html">
+              <span class="toc-num">01</span>
+              <span class="toc-info">
+                <strong>PowerShell 是什麼？為什麼值得學？</strong>
+                <span>認識 PowerShell、與 cmd 的差別、實際用途</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item done">
+            <a href="chapters/chapter2.html">
+              <span class="toc-num">02</span>
+              <span class="toc-info">
+                <strong>五分鐘認識核心：介面、指令、物件觀念</strong>
+                <span>Cmdlet 命名規則、物件、管線、Get-Help</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item">
+            <a href="chapters/chapter3.html">
+              <span class="toc-num">03</span>
+              <span class="toc-info">
+                <strong>開始操作：開啟 PowerShell、執行基本指令</strong>
+                <span>開啟方式、執行政策、第一個指令</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item">
+            <a href="chapters/chapter4.html">
+              <span class="toc-num">04</span>
+              <span class="toc-info">
+                <strong>常用指令入門：檔案、資料夾、路徑操作</strong>
+                <span>Get-ChildItem、Set-Location、New-Item</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item">
+            <a href="chapters/chapter5.html">
+              <span class="toc-num">05</span>
+              <span class="toc-info">
+                <strong>常用指令實戰：查看、複製、搬移、刪除</strong>
+                <span>Copy-Item、Move-Item、Remove-Item、Get-Content</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item">
+            <a href="chapters/chapter6.html">
+              <span class="toc-num">06</span>
+              <span class="toc-info">
+                <strong>變數、陣列、字串與基本資料處理</strong>
+                <span>$變數、陣列、字串操作、型別</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item">
+            <a href="chapters/chapter7.html">
+              <span class="toc-num">07</span>
+              <span class="toc-info">
+                <strong>條件判斷與迴圈</strong>
+                <span>if/else、foreach、while、switch</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item">
+            <a href="chapters/chapter8.html">
+              <span class="toc-num">08</span>
+              <span class="toc-info">
+                <strong>PowerShell 腳本入門</strong>
+                <span>.ps1 檔案、執行政策、參數、常見問題</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item">
+            <a href="chapters/chapter9.html">
+              <span class="toc-num">09</span>
+              <span class="toc-info">
+                <strong>實用小自動化</strong>
+                <span>整理檔案、批次改名、系統資訊查詢</span>
+              </span>
+            </a>
+          </li>
+          <li class="toc-item">
+            <a href="chapters/chapter10.html">
+              <span class="toc-num">10</span>
+              <span class="toc-info">
+                <strong>持續練習慢慢變達人</strong>
+                <span>學習策略、常見錯誤、進階方向</span>
+              </span>
+            </a>
+          </li>
+        </ol>
+      </section>
+    </div>
   </main>
 
   <footer class="site-footer">
