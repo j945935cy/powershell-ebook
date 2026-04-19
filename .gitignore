@@ -11,3 +11,8 @@
 # Temp
 *.tmp
 *.bak
+
+# Local planning files
+AGENTS.md
+PROJECT_PROMPT.md
+back/
