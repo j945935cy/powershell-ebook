@@ -44,45 +44,126 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>用 <code>if / elseif / else</code> 做條件判斷</li>
+            <li>用 <code>foreach</code> 遍歷集合</li>
+            <li>用 <code>for</code> 跑固定次數的迴圈</li>
+            <li>用 <code>while</code> 在條件成立時持續執行</li>
+            <li>認識 <code>switch</code> 多條件判斷</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
-          <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
-          </p>
+          <h2>if / elseif / else</h2>
+          <pre><code>$score = 75
+
+if ($score -ge 90) {
+    Write-Output "優等"
+} elseif ($score -ge 70) {
+    Write-Output "良好"
+} elseif ($score -ge 60) {
+    Write-Output "及格"
+} else {
+    Write-Output "不及格"
+}
+
+# 搭配 Test-Path
+if (Test-Path "C:\mydata") {
+    Write-Output "資料夾存在"
+} else {
+    New-Item "C:\mydata" -ItemType Directory
+    Write-Output "已建立資料夾"
+}</code></pre>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>foreach 迴圈</h2>
+          <p>遍歷陣列或集合中的每一個元素：</p>
+          <pre><code>$names = @("Alice", "Bob", "Charlie")
+
+foreach ($name in $names) {
+    Write-Output "你好，$name"
+}
+
+# 搭配 Get-ChildItem，處理每個檔案
+foreach ($file in Get-ChildItem .\*.txt) {
+    Write-Output $file.Name
+}
+
+# 管線寫法（ForEach-Object）
+Get-ChildItem .\*.txt | ForEach-Object {
+    Write-Output $_.Name
+}</code></pre>
+          <div class="note">
+            <strong><code>$_</code> 是什麼？</strong>
+            在管線中，<code>$_</code> 代表目前正在處理的那一個物件，類似「它」的意思。
+          </div>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>for 迴圈</h2>
+          <pre><code># 從 1 數到 5
+for ($i = 1; $i -le 5; $i++) {
+    Write-Output "第 $i 次"
+}
 
-        <div class="warning">
-          <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
-        </div>
+# 倒數
+for ($i = 10; $i -gt 0; $i--) {
+    Write-Output $i
+}</code></pre>
+        </section>
+
+        <section>
+          <h2>while 迴圈</h2>
+          <pre><code>$count = 0
+
+while ($count -lt 5) {
+    Write-Output "目前計數：$count"
+    $count++
+}</code></pre>
+          <div class="warning">
+            <strong>注意無限迴圈：</strong>
+            while 的條件永遠成立就會跑不停。
+            按 <kbd>Ctrl + C</kbd> 可以強制中斷執行中的指令。
+          </div>
+        </section>
+
+        <section>
+          <h2>switch 多條件判斷</h2>
+          <pre><code>$day = "Monday"
+
+switch ($day) {
+    "Monday"    { Write-Output "星期一" }
+    "Tuesday"   { Write-Output "星期二" }
+    "Wednesday" { Write-Output "星期三" }
+    default     { Write-Output "其他天" }
+}
+
+# switch 也可以比對數字範圍
+$score = 85
+switch ($score) {
+    { $_ -ge 90 } { Write-Output "優等"; break }
+    { $_ -ge 70 } { Write-Output "良好"; break }
+    default        { Write-Output "待加強" }
+}</code></pre>
+        </section>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          <ol>
+            <li>寫一個 if 判斷：如果 <code>$num</code> 大於 0 輸出「正數」，小於 0 輸出「負數」，等於 0 輸出「零」</li>
+            <li>建立陣列 <code>$cities = @("台北", "台中", "高雄")</code>，用 foreach 逐一輸出</li>
+            <li>用 for 迴圈輸出 1 到 10 的偶數（提示：<code>$i % 2 -eq 0</code>）</li>
+          </ol>
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            條件判斷和迴圈是讓腳本「自動做事」的關鍵。
+            <code>if</code> 決定要不要做，<code>foreach</code> 讓你對每個物件做一樣的事，
+            <code>for</code> 和 <code>while</code> 控制重複次數。
+          </p>
+          <p>下一章，把這些技巧放進腳本檔案裡。</p>
         </section>
 
         <nav class="chapter-nav">

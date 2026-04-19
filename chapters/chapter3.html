@@ -44,45 +44,123 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>知道幾種開啟 PowerShell 的方式</li>
+            <li>了解執行政策是什麼、怎麼設定</li>
+            <li>學會輸入第一個指令</li>
+            <li>認識 Tab 補全與歷史記錄</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
-          <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
-          </p>
+          <h2>怎麼開啟 PowerShell？</h2>
+          <p>有好幾種方式，選你最順手的：</p>
+          <ul>
+            <li><strong>搜尋列</strong>：按 Win 鍵，輸入「PowerShell」，點擊開啟</li>
+            <li><strong>右鍵選單</strong>：在資料夾空白處按右鍵，選「在這裡開啟 PowerShell 視窗」（Win 10）</li>
+            <li><strong>執行對話框</strong>：Win + R，輸入 <code>powershell</code>，按 Enter</li>
+            <li><strong>工作管理員</strong>：檔案 > 執行新工作，輸入 <code>powershell</code></li>
+          </ul>
+          <div class="note">
+            <strong>以系統管理員身分開啟：</strong>
+            搜尋到 PowerShell 後，按右鍵選「以系統管理員身分執行」。
+            某些指令（例如安裝軟體、修改系統設定）需要這個權限。
+            視窗標題列會顯示「系統管理員」字樣。
+          </div>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>執行政策（Execution Policy）</h2>
+          <p>
+            第一次要執行腳本（.ps1 檔案）時，可能會看到錯誤訊息說「無法執行腳本」。
+            這是因為 Windows 預設限制腳本執行，避免誤跑惡意程式。
+          </p>
+          <p>查看目前的執行政策：</p>
+          <pre><code>Get-ExecutionPolicy</code></pre>
+          <p>常見的執行政策設定：</p>
+          <ul>
+            <li><code>Restricted</code>：預設值，完全不允許執行腳本</li>
+            <li><code>RemoteSigned</code>：允許本機腳本，網路下載的腳本需要簽章</li>
+            <li><code>Unrestricted</code>：允許所有腳本（不建議）</li>
+          </ul>
+          <p>以系統管理員身分開啟 PowerShell，執行下列指令開放本機腳本：</p>
+          <pre><code>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code></pre>
+          <div class="warning">
+            <strong>安全提醒：</strong>
+            不要隨便設成 <code>Unrestricted</code>，<code>RemoteSigned</code> 已經足夠日常使用。
+          </div>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>輸入第一個指令</h2>
+          <p>看到提示符號 <code>PS C:\Users\你的帳號&gt;</code> 後，就可以開始輸入指令了。</p>
+          <pre><code># 顯示目前路徑
+Get-Location
+
+# 列出目前資料夾的內容
+Get-ChildItem
+
+# 顯示一段文字
+Write-Output "Hello, PowerShell!"
+
+# 查看目前日期與時間
+Get-Date</code></pre>
+          <p>輸入指令後按 <kbd>Enter</kbd> 執行，結果會直接顯示在下方。</p>
+        </section>
+
+        <section>
+          <h2>兩個超好用的操作技巧</h2>
+          <h3>Tab 補全</h3>
+          <p>
+            輸入指令或路徑的前幾個字，按 <kbd>Tab</kbd> 鍵會自動補全。
+            例如輸入 <code>Get-Ch</code> 然後按 Tab，會自動補成 <code>Get-ChildItem</code>。
+            如果有多個選項，多按幾次 Tab 可以輪換。
+          </p>
+          <h3>歷史記錄</h3>
+          <p>
+            按 <kbd>↑</kbd> 上方向鍵，可以叫回上一個指令。
+            持續按可以往更早的記錄翻。
+            按 <kbd>↓</kbd> 往回走。
+          </p>
+          <div class="note">
+            <strong>搜尋歷史記錄：</strong>
+            按 <kbd>Ctrl + R</kbd> 可以搜尋過去輸入過的指令，非常實用。
+          </div>
+        </section>
+
+        <section>
+          <h2>清除畫面</h2>
+          <pre><code># 清除畫面（等同 cmd 的 cls）
+Clear-Host
+
+# 或直接用別名
+cls</code></pre>
+        </section>
 
         <div class="warning">
           <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
+          看到紅色錯誤訊息不要驚慌，PowerShell 的錯誤訊息通常很詳細。
+          找 <code>CategoryInfo</code> 和最後幾行，通常就能看出是什麼問題。
+          最常見的原因是：指令名稱拼錯、路徑打錯、缺少必要參數。
         </div>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          <ol>
+            <li>開啟 PowerShell，輸入 <code>Get-Date</code> 查看目前時間</li>
+            <li>輸入 <code>Get-ExecutionPolicy</code> 看看你目前的執行政策</li>
+            <li>試試 Tab 補全：輸入 <code>Get-L</code> 然後按 Tab</li>
+            <li>按 <kbd>↑</kbd> 叫回上一個指令</li>
+          </ol>
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            PowerShell 可以透過多種方式開啟，需要系統權限時要以系統管理員身分執行。
+            執行政策是保護機制，學習時設為 <code>RemoteSigned</code> 即可。
+            Tab 補全和歷史記錄是日常操作必用的技巧。
+          </p>
+          <p>下一章，進入實際的檔案與路徑操作。</p>
         </section>
 
         <nav class="chapter-nav">

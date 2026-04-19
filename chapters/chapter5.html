@@ -44,45 +44,115 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>用 <code>Get-Content</code> 查看檔案內容</li>
+            <li>用 <code>Copy-Item</code> 複製檔案</li>
+            <li>用 <code>Move-Item</code> 搬移或改名</li>
+            <li>用 <code>Remove-Item</code> 刪除檔案</li>
+            <li>學會批次操作多個檔案</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
-          <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
-          </p>
+          <h2>查看檔案內容：Get-Content</h2>
+          <pre><code># 顯示整個檔案內容
+Get-Content .\readme.txt
+
+# 只顯示前 5 行
+Get-Content .\log.txt -TotalCount 5
+
+# 只顯示最後 10 行
+Get-Content .\log.txt -Tail 10
+
+# 搜尋包含特定關鍵字的行
+Get-Content .\log.txt | Where-Object { $_ -like "*error*" }</code></pre>
+          <div class="note">
+            <strong>別名：</strong><code>Get-Content</code> 可縮寫為 <code>gc</code> 或 <code>cat</code>。
+          </div>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>複製：Copy-Item</h2>
+          <pre><code># 複製單一檔案
+Copy-Item .\hello.txt .\backup\hello.txt
+
+# 複製到另一個資料夾（保留原名）
+Copy-Item .\hello.txt .\backup\
+
+# 複製整個資料夾（含子資料夾）
+Copy-Item .\myfolder\ .\backup\myfolder\ -Recurse
+
+# 複製所有 .txt 檔到另一個資料夾
+Copy-Item .\*.txt .\backup\</code></pre>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>搬移與改名：Move-Item</h2>
+          <pre><code># 搬移檔案到另一個資料夾
+Move-Item .\hello.txt .\archive\
 
-        <div class="warning">
-          <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
-        </div>
+# 直接改名（在同一個資料夾）
+Move-Item .\old-name.txt .\new-name.txt
+
+# 搬移並改名
+Move-Item .\report.txt .\archive\report-2024.txt
+
+# 搬移整個資料夾
+Move-Item .\myfolder\ C:\backup\</code></pre>
+        </section>
+
+        <section>
+          <h2>刪除：Remove-Item</h2>
+          <pre><code># 刪除單一檔案
+Remove-Item .\temp.txt
+
+# 刪除資料夾（含所有內容）
+Remove-Item .\temp-folder\ -Recurse
+
+# 刪除所有 .log 檔
+Remove-Item .\*.log
+
+# 刪除前先確認
+Remove-Item .\important.txt -Confirm</code></pre>
+          <div class="warning">
+            <strong>刪除沒有資源回收桶：</strong>
+            PowerShell 的 <code>Remove-Item</code> 直接刪除，不會移到資源回收桶。
+            重要檔案操作前請先備份，或加上 <code>-WhatIf</code> 參數先預覽會發生什麼事。
+          </div>
+          <pre><code># -WhatIf 只預覽，不真的執行
+Remove-Item .\*.log -WhatIf</code></pre>
+        </section>
+
+        <section>
+          <h2>批次操作：搭配管線</h2>
+          <pre><code># 找到所有超過 30 天的 .log 檔並刪除
+$cutoff = (Get-Date).AddDays(-30)
+Get-ChildItem .\logs\ -Filter "*.log" |
+    Where-Object { $_.LastWriteTime -lt $cutoff } |
+    Remove-Item
+
+# 把所有 .txt 檔複製到備份資料夾
+Get-ChildItem .\*.txt | Copy-Item -Destination .\backup\</code></pre>
+        </section>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          <ol>
+            <li>在桌面建立 <code>test.txt</code>：<code>New-Item ~\Desktop\test.txt -Value "測試內容"</code></li>
+            <li>查看內容：<code>Get-Content ~\Desktop\test.txt</code></li>
+            <li>複製到目前資料夾：<code>Copy-Item ~\Desktop\test.txt .\test-copy.txt</code></li>
+            <li>改名：<code>Move-Item .\test-copy.txt .\test-renamed.txt</code></li>
+            <li>刪除（加 -WhatIf 先預覽）：<code>Remove-Item .\test-renamed.txt -WhatIf</code></li>
+          </ol>
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            <code>Get-Content</code>、<code>Copy-Item</code>、<code>Move-Item</code>、<code>Remove-Item</code>
+            是日常操作的四大指令。搭配管線可以做批次處理。
+            操作前善用 <code>-WhatIf</code> 可以避免誤刪。
+          </p>
+          <p>下一章，進入變數與資料處理。</p>
         </section>
 
         <nav class="chapter-nav">

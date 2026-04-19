@@ -44,45 +44,136 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>了解什麼是 .ps1 腳本檔案</li>
+            <li>學會建立與執行第一個腳本</li>
+            <li>認識參數與函式的寫法</li>
+            <li>知道如何處理常見的執行錯誤</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
+          <h2>什麼是 .ps1 腳本？</h2>
           <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
+            把多個 PowerShell 指令存成一個 <code>.ps1</code> 檔案，
+            就是一個腳本。每次執行這個檔案，就會依序執行裡面所有的指令。
+          </p>
+          <p>
+            腳本適合用在：重複性工作、需要多個步驟的操作、定時自動執行的任務。
           </p>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>建立第一個腳本</h2>
+          <p>用任何文字編輯器（記事本、VS Code 都可以）建立 <code>hello.ps1</code>：</p>
+          <pre><code># hello.ps1
+Write-Output "Hello, PowerShell!"
+Write-Output "現在時間：$(Get-Date)"
+Get-ChildItem $env:USERPROFILE | Select-Object -First 5</code></pre>
+          <p>存檔後，在 PowerShell 執行：</p>
+          <pre><code># 用相對路徑執行（必須加 .\）
+.\hello.ps1
+
+# 用絕對路徑執行
+C:\scripts\hello.ps1</code></pre>
+          <div class="warning">
+            <strong>一定要加 <code>.\</code>：</strong>
+            執行同一個資料夾的腳本，名稱前面必須加 <code>.\</code>，
+            直接輸入 <code>hello.ps1</code> 會找不到。
+          </div>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>加入參數</h2>
+          <pre><code># greet.ps1
+param(
+    [string]$Name = "朋友",
+    [int]$Times = 1
+)
 
-        <div class="warning">
-          <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
-        </div>
+for ($i = 0; $i -lt $Times; $i++) {
+    Write-Output "你好，$Name！"
+}</code></pre>
+          <p>執行時傳入參數：</p>
+          <pre><code>.\greet.ps1 -Name "Jack" -Times 3</code></pre>
+        </section>
+
+        <section>
+          <h2>函式（Function）</h2>
+          <pre><code># 定義函式
+function Say-Hello {
+    param([string]$Name)
+    Write-Output "你好，$Name！"
+}
+
+# 呼叫函式
+Say-Hello -Name "Alice"
+Say-Hello "Bob"
+
+# 有回傳值的函式
+function Add-Numbers {
+    param([int]$A, [int]$B)
+    return $A + $B
+}
+
+$result = Add-Numbers -A 10 -B 20
+Write-Output "結果：$result"</code></pre>
+        </section>
+
+        <section>
+          <h2>錯誤處理</h2>
+          <pre><code># 設定遇到錯誤就停止
+$ErrorActionPreference = "Stop"
+
+# try / catch 捕捉錯誤
+try {
+    Get-Content "不存在的檔案.txt"
+} catch {
+    Write-Output "發生錯誤：$($_.Exception.Message)"
+} finally {
+    Write-Output "不管有沒有錯，這裡都會執行"
+}</code></pre>
+        </section>
+
+        <section>
+          <h2>常見執行問題</h2>
+          <ul>
+            <li>
+              <strong>「無法執行腳本」</strong>：執行政策限制，參考第 3 章設定 <code>RemoteSigned</code>
+            </li>
+            <li>
+              <strong>「找不到路徑」</strong>：確認你在正確的資料夾，加上 <code>.\</code>
+            </li>
+            <li>
+              <strong>「存取被拒」</strong>：以系統管理員身分重新開啟 PowerShell
+            </li>
+            <li>
+              <strong>中文亂碼</strong>：存檔時選 UTF-8（無 BOM）編碼
+            </li>
+          </ul>
+        </section>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          <ol>
+            <li>建立 <code>info.ps1</code>，內容包含：顯示電腦名稱、目前使用者、PowerShell 版本</li>
+            <li>執行它：<code>.\info.ps1</code></li>
+            <li>加入 <code>param</code> 讓使用者可以傳入一個 <code>$Message</code> 顯示在最後</li>
+          </ol>
+          <pre><code># 參考：顯示系統資訊
+Write-Output "電腦名稱：$env:COMPUTERNAME"
+Write-Output "使用者：$env:USERNAME"
+Write-Output "PowerShell 版本：$($PSVersionTable.PSVersion)"</code></pre>
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            腳本就是把指令存成 <code>.ps1</code> 檔案。
+            用 <code>param</code> 接收參數，用 <code>function</code> 封裝邏輯，
+            用 <code>try/catch</code> 處理錯誤。
+            這些是寫出實用腳本的基礎。
+          </p>
+          <p>下一章，把這些技巧組合成真實的小自動化。</p>
         </section>
 
         <nav class="chapter-nav">

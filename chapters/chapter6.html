@@ -44,45 +44,148 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>學會宣告與使用變數</li>
+            <li>認識常用資料型別</li>
+            <li>操作陣列與字串</li>
+            <li>用運算子做基本計算與比較</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
-          <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
-          </p>
+          <h2>變數</h2>
+          <p>PowerShell 的變數以 <code>$</code> 開頭，不需要事先宣告型別：</p>
+          <pre><code># 宣告變數
+$name = "PowerShell"
+$count = 10
+$price = 99.5
+$isReady = $true
+
+# 使用變數
+Write-Output "你好，$name"
+Write-Output "數量：$count"
+
+# 查看變數型別
+$count.GetType().Name   # 輸出：Int32
+$name.GetType().Name    # 輸出：String</code></pre>
+          <div class="note">
+            <strong>字串內插：</strong>
+            用雙引號 <code>"..."</code> 包住字串時，<code>$變數</code> 會被自動替換成值。
+            用單引號 <code>'...'</code> 則不會，原樣輸出。
+          </div>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>常用資料型別</h2>
+          <pre><code># 字串（String）
+$msg = "Hello"
+
+# 整數（Int）
+$num = 42
+
+# 浮點數（Double）
+$pi = 3.14
+
+# 布林值（Boolean）
+$flag = $true
+$flag = $false
+
+# 空值
+$nothing = $null
+
+# 強制指定型別
+[int]$x = "123"      # 轉換為整數
+[string]$s = 456     # 轉換為字串</code></pre>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>陣列</h2>
+          <pre><code># 建立陣列
+$fruits = @("apple", "banana", "cherry")
+
+# 取得元素（從 0 開始）
+$fruits[0]   # apple
+$fruits[2]   # cherry
+$fruits[-1]  # cherry（最後一個）
+
+# 取得陣列長度
+$fruits.Count   # 3
+
+# 加入元素
+$fruits += "grape"
+
+# 遍歷陣列
+foreach ($fruit in $fruits) {
+    Write-Output $fruit
+}</code></pre>
+        </section>
+
+        <section>
+          <h2>字串操作</h2>
+          <pre><code>$text = "Hello, PowerShell!"
+
+# 長度
+$text.Length          # 18
+
+# 轉大小寫
+$text.ToUpper()       # HELLO, POWERSHELL!
+$text.ToLower()       # hello, powershell!
+
+# 取代
+$text.Replace("Hello", "Hi")   # Hi, PowerShell!
+
+# 切割
+$text.Split(",")      # 分成 @("Hello", " PowerShell!")
+
+# 是否包含
+$text.Contains("Power")   # True
+
+# 去除前後空白
+"  hello  ".Trim()    # "hello"
+
+# 取子字串（從第 0 個字元，取 5 個）
+$text.Substring(0, 5) # Hello</code></pre>
+        </section>
+
+        <section>
+          <h2>比較運算子</h2>
+          <pre><code># 數值比較
+5 -eq 5    # True（等於）
+5 -ne 3    # True（不等於）
+5 -gt 3    # True（大於）
+5 -lt 10   # True（小於）
+5 -ge 5    # True（大於等於）
+5 -le 10   # True（小於等於）
+
+# 字串比較（不分大小寫）
+"hello" -eq "HELLO"   # True
+"hello" -like "hel*"  # True（萬用字元比對）
+"hello" -match "^hel" # True（正則表達式）</code></pre>
+        </section>
 
         <div class="warning">
           <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
+          不要用 <code>==</code> 來比較，PowerShell 用 <code>-eq</code>。
+          <code>$a = 5</code> 是賦值，<code>$a -eq 5</code> 才是比較。
         </div>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          <ol>
+            <li>建立一個 <code>$name</code> 變數存你的名字，用 <code>Write-Output</code> 輸出 "你好，$name"</li>
+            <li>建立陣列 <code>$nums = @(10, 20, 30, 40, 50)</code>，輸出第三個元素</li>
+            <li>用 <code>$nums.Count</code> 確認長度</li>
+            <li>試試 <code>"PowerShell".ToUpper()</code></li>
+          </ol>
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            變數以 <code>$</code> 開頭，不需要宣告型別。
+            陣列用 <code>@()</code> 建立，從 0 開始索引。
+            字串有許多內建方法，比較用 <code>-eq</code>、<code>-like</code> 等運算子。
+          </p>
+          <p>下一章，用這些基礎來寫條件判斷與迴圈。</p>
         </section>
 
         <nav class="chapter-nav">

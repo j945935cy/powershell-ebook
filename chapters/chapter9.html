@@ -44,45 +44,132 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>寫一個自動整理下載資料夾的腳本</li>
+            <li>批次替多個檔案改名</li>
+            <li>查詢系統資訊並輸出報告</li>
+            <li>學會把腳本排程自動執行</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
-          <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
-          </p>
+          <h2>範例一：自動整理下載資料夾</h2>
+          <p>依副檔名分類，把檔案搬到對應的子資料夾：</p>
+          <pre><code># organize-downloads.ps1
+$source = "$env:USERPROFILE\Downloads"
+
+$rules = @{
+    "Images"    = @(".jpg", ".jpeg", ".png", ".gif", ".webp")
+    "Documents" = @(".pdf", ".docx", ".xlsx", ".txt", ".md")
+    "Archives"  = @(".zip", ".rar", ".7z")
+    "Videos"    = @(".mp4", ".mkv", ".avi", ".mov")
+}
+
+foreach ($folder in $rules.Keys) {
+    $dest = Join-Path $source $folder
+    if (-not (Test-Path $dest)) {
+        New-Item $dest -ItemType Directory | Out-Null
+    }
+
+    foreach ($ext in $rules[$folder]) {
+        Get-ChildItem $source -Filter "*$ext" -File | ForEach-Object {
+            Move-Item $_.FullName $dest
+            Write-Output "已移動：$($_.Name) → $folder"
+        }
+    }
+}
+
+Write-Output "整理完成！"</code></pre>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>範例二：批次改名</h2>
+          <pre><code># 把所有 .txt 檔加上日期前綴
+$date = Get-Date -Format "yyyyMMdd"
+
+Get-ChildItem .\*.txt | ForEach-Object {
+    $newName = "$date-$($_.Name)"
+    Rename-Item $_.FullName $newName
+    Write-Output "改名：$($_.Name) → $newName"
+}
+
+# 把檔名中的空格換成底線
+Get-ChildItem . -File | ForEach-Object {
+    $newName = $_.Name -replace ' ', '_'
+    if ($newName -ne $_.Name) {
+        Rename-Item $_.FullName $newName
+    }
+}</code></pre>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>範例三：系統資訊查詢報告</h2>
+          <pre><code># sysinfo.ps1
+$report = @"
+=== 系統資訊報告 ===
+產生時間：$(Get-Date)
 
-        <div class="warning">
-          <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
-        </div>
+電腦名稱：$env:COMPUTERNAME
+使用者：$env:USERNAME
+OS：$((Get-CimInstance Win32_OperatingSystem).Caption)
+PowerShell：$($PSVersionTable.PSVersion)
+
+--- CPU ---
+$((Get-CimInstance Win32_Processor).Name)
+
+--- 記憶體 ---
+總計：$([math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB, 1)) GB
+
+--- 磁碟 ---
+"@
+
+Get-PSDrive -PSProvider FileSystem | ForEach-Object {
+    $used = [math]::Round(($_.Used / 1GB), 1)
+    $free = [math]::Round(($_.Free / 1GB), 1)
+    $report += "$($_.Name):  已用 ${used}GB  剩餘 ${free}GB`n"
+}
+
+Write-Output $report
+$report | Out-File ".\sysinfo-$(Get-Date -Format 'yyyyMMdd').txt"</code></pre>
+        </section>
+
+        <section>
+          <h2>補充：用工作排程器定時執行</h2>
+          <p>把腳本排程為每天自動執行：</p>
+          <pre><code># 建立排程工作（需系統管理員）
+$action = New-ScheduledTaskAction `
+    -Execute "powershell.exe" `
+    -Argument "-ExecutionPolicy RemoteSigned -File C:\scripts\organize-downloads.ps1"
+
+$trigger = New-ScheduledTaskTrigger -Daily -At "09:00"
+
+Register-ScheduledTask `
+    -TaskName "整理下載資料夾" `
+    -Action $action `
+    -Trigger $trigger `
+    -RunLevel Highest</code></pre>
+          <div class="note">
+            <strong>不想用排程器？</strong>
+            也可以把腳本放在開機啟動資料夾，或用 Windows 工作排程器的 GUI 介面設定。
+          </div>
+        </section>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          <ol>
+            <li>在桌面建立幾個不同副檔名的空白檔案（.txt、.jpg、.pdf）</li>
+            <li>修改「自動整理」腳本，改為整理桌面</li>
+            <li>執行後確認檔案是否移到對應資料夾</li>
+          </ol>
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            這一章把前幾章學到的所有技巧整合起來，寫出真正有用的腳本。
+            整理檔案、批次改名、查詢系統資訊，都是日常實用的場景。
+            只要掌握這些模式，就能套用到各種不同的自動化需求。
+          </p>
+          <p>最後一章，聊聊如何持續進步。</p>
         </section>
 
         <nav class="chapter-nav">

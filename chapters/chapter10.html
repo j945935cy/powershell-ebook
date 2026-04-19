@@ -44,50 +44,132 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>建立有效的學習習慣</li>
+            <li>了解初學者最常踩的坑</li>
+            <li>知道學完基礎後的進階方向</li>
+            <li>找到持續練習的動力來源</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
-          <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
-          </p>
+          <h2>學習策略：怎麼學才有效？</h2>
+          <ol>
+            <li>
+              <strong>從真實需求出發</strong><br>
+              不要為了學而學。想想你目前什麼工作最重複、最枯燥？
+              從那裡找腳本的題目，學起來有動力，也馬上有用。
+            </li>
+            <li>
+              <strong>每天 15 分鐘，比一次 3 小時有效</strong><br>
+              短時間高頻率的練習，記憶留存率高很多。
+              睡前試試用 PowerShell 做一件小事，例如整理今天的下載。
+            </li>
+            <li>
+              <strong>先跑起來，再理解</strong><br>
+              遇到不懂的語法，先複製貼上讓它跑起來，再去研究每一行在做什麼。
+              不要卡在「完全理解才開始」的陷阱。
+            </li>
+            <li>
+              <strong>把所有腳本存起來</strong><br>
+              建立一個 <code>scripts</code> 資料夾，把每次寫的腳本存好。
+              幾個月後你會感謝自己。
+            </li>
+          </ol>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>初學者最常踩的坑</h2>
+          <ul>
+            <li>
+              <strong>忘記加 <code>$</code></strong>：變數一定要有 <code>$</code>，<code>name</code> 和 <code>$name</code> 完全不同。
+            </li>
+            <li>
+              <strong>比較用 <code>=</code></strong>：<code>=</code> 是賦值，比較要用 <code>-eq</code>。
+            </li>
+            <li>
+              <strong>路徑沒有引號</strong>：路徑有空格一定要加引號。
+            </li>
+            <li>
+              <strong>執行政策沒設定</strong>：第一次跑腳本要先設 <code>RemoteSigned</code>。
+            </li>
+            <li>
+              <strong>沒有加 <code>.\ </code></strong>：執行同資料夾的腳本要加 <code>.\script.ps1</code>。
+            </li>
+            <li>
+              <strong>誤用刪除</strong>：<code>Remove-Item</code> 直接刪，不進資源回收桶，先用 <code>-WhatIf</code> 預覽。
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>進階方向</h2>
+          <p>學完這本書的基礎後，可以繼續探索：</p>
+          <ul>
+            <li>
+              <strong>模組（Module）</strong>：安裝第三方模組擴充功能，例如 <code>PSReadLine</code>、<code>oh-my-posh</code>
+            </li>
+            <li>
+              <strong>遠端管理</strong>：用 <code>Invoke-Command</code> 在遠端電腦執行指令
+            </li>
+            <li>
+              <strong>REST API</strong>：用 <code>Invoke-RestMethod</code> 串接 Web API
+            </li>
+            <li>
+              <strong>Active Directory</strong>：管理 Windows 網域帳號
+            </li>
+            <li>
+              <strong>Azure / AWS CLI</strong>：雲端資源管理
+            </li>
+            <li>
+              <strong>Pester</strong>：PowerShell 腳本的測試框架
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>推薦學習資源</h2>
+          <ul>
+            <li><strong>官方文件</strong>：<code>Get-Help</code> 就是最好的文件，永遠在你身邊</li>
+            <li><strong>Microsoft Learn</strong>：微軟官方免費課程，有繁體中文</li>
+            <li><strong>PowerShell Gallery</strong>：<code>Find-Module</code> 探索社群模組</li>
+            <li><strong>GitHub</strong>：搜尋別人的 PowerShell 腳本，學實際用法</li>
+          </ul>
+          <pre><code># 立刻查詢任何你不確定的東西
+Get-Help about_Operators
+Get-Help about_Arrays
+Get-Help about_Functions
+
+# 搜尋有哪些相關指令
+Get-Command -Noun File
+Get-Command -Verb Get</code></pre>
         </section>
 
         <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
-
-        <div class="warning">
-          <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
+          <strong>最重要的一件事：</strong>
+          PowerShell 學得好不好，差別不在天份，在於你有沒有打開它、實際用它。
+          每天做一件事，一年後你就是辦公室裡最會 PowerShell 的那個人。
         </div>
 
         <div class="exercise">
-          <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          <strong>最後挑戰：</strong>
+          在你的電腦上找一個真實的重複性工作，嘗試用 PowerShell 自動化它。
+          不用完美，能跑起來就算成功。
         </div>
 
         <section>
-          <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <h2>全書小結</h2>
+          <p>
+            從第 1 章認識 PowerShell，到這一章，你已經走過了完整的入門路線。
+            觀念、指令、變數、條件、迴圈、腳本、自動化——這些是所有 PowerShell 工作的基礎。
+          </p>
+          <p>
+            接下來，就靠你自己持續練習了。加油！
+          </p>
         </section>
 
         <nav class="chapter-nav">
           <a href="chapter9.html">← 上一章</a>
-          <a href="../index.html">下一章 →</a>
+          <a href="../index.html">返回首頁 →</a>
         </nav>
       </article>
     </div>

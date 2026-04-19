@@ -44,45 +44,126 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>學會用 <code>Set-Location</code> 切換路徑</li>
+            <li>用 <code>Get-ChildItem</code> 列出檔案</li>
+            <li>用 <code>New-Item</code> 建立檔案與資料夾</li>
+            <li>理解絕對路徑與相對路徑的差別</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
-          <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
-          </p>
+          <h2>路徑觀念</h2>
+          <p>在 PowerShell 裡操作檔案，一定要先搞清楚「你在哪裡」。</p>
+          <ul>
+            <li><strong>絕對路徑</strong>：從根目錄開始的完整路徑，例如 <code>C:\Users\Jack\Documents</code></li>
+            <li><strong>相對路徑</strong>：從目前位置出發的路徑，例如 <code>.\Documents</code> 或 <code>..\Desktop</code></li>
+          </ul>
+          <pre><code># . 代表目前資料夾
+# .. 代表上一層資料夾
+# ~ 代表家目錄（C:\Users\你的帳號）
+
+Set-Location ~
+Set-Location .\Documents
+Set-Location ..\Desktop</code></pre>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>切換資料夾：Set-Location</h2>
+          <pre><code># 切換到 C 槽根目錄
+Set-Location C:\
+
+# 切換到桌面
+Set-Location ~\Desktop
+
+# 回到上一層
+Set-Location ..
+
+# 回到家目錄
+Set-Location ~
+
+# 查看目前所在路徑
+Get-Location</code></pre>
+          <div class="note">
+            <strong>別名：</strong><code>Set-Location</code> 可以寫成 <code>cd</code>，<code>Get-Location</code> 可以寫成 <code>pwd</code>。
+            和 Linux/cmd 的操作習慣一樣。
+          </div>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>列出內容：Get-ChildItem</h2>
+          <pre><code># 列出目前資料夾所有內容
+Get-ChildItem
+
+# 列出特定資料夾
+Get-ChildItem C:\Users
+
+# 只列出 .txt 檔
+Get-ChildItem -Filter "*.txt"
+
+# 列出包含隱藏檔
+Get-ChildItem -Force
+
+# 遞迴列出所有子資料夾的內容
+Get-ChildItem -Recurse
+
+# 只顯示名稱
+Get-ChildItem | Select-Object Name</code></pre>
+        </section>
+
+        <section>
+          <h2>建立檔案與資料夾：New-Item</h2>
+          <pre><code># 建立新資料夾
+New-Item -Path "C:\test-folder" -ItemType Directory
+
+# 建立新檔案
+New-Item -Path "C:\test-folder\hello.txt" -ItemType File
+
+# 建立檔案並寫入內容
+New-Item -Path ".\note.txt" -ItemType File -Value "這是內容"</code></pre>
+          <div class="note">
+            <strong>簡寫：</strong>
+            <code>-ItemType Directory</code> 可以寫成 <code>-Type Directory</code>，
+            建資料夾的常見縮寫是 <code>mkdir 資料夾名稱</code>（別名）。
+          </div>
+        </section>
+
+        <section>
+          <h2>查看路徑是否存在</h2>
+          <pre><code># 回傳 True 或 False
+Test-Path "C:\Windows"
+
+# 在腳本裡常這樣用
+if (Test-Path "C:\mydata") {
+    Write-Output "資料夾存在"
+} else {
+    Write-Output "資料夾不存在"
+}</code></pre>
+        </section>
 
         <div class="warning">
           <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
+          路徑中有空格時，記得用引號括起來：<code>Set-Location "C:\Program Files"</code>。
+          沒有引號的話 PowerShell 會把空格後面的字當作另一個參數。
         </div>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          <ol>
+            <li>切換到桌面：<code>Set-Location ~\Desktop</code></li>
+            <li>列出桌面所有檔案：<code>Get-ChildItem</code></li>
+            <li>在桌面建立一個測試資料夾：<code>New-Item -Path ".\test123" -ItemType Directory</code></li>
+            <li>進入那個資料夾：<code>Set-Location .\test123</code></li>
+            <li>確認路徑：<code>Get-Location</code></li>
+          </ol>
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            <code>Set-Location</code>、<code>Get-ChildItem</code>、<code>New-Item</code> 是最基本的三個操作指令。
+            搞清楚絕對路徑與相對路徑，是後面所有操作的基礎。
+          </p>
+          <p>下一章，學會複製、搬移、刪除與查看檔案內容。</p>
         </section>
 
         <nav class="chapter-nav">
