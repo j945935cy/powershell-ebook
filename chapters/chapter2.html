@@ -44,45 +44,138 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>認識 PowerShell 的介面與提示符號</li>
+            <li>了解 Cmdlet 的命名規則</li>
+            <li>理解 PowerShell 的物件觀念</li>
+            <li>學會用管線（pipeline）串接指令</li>
+            <li>知道如何取得說明文件</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
+          <h2>PowerShell 的介面</h2>
+          <p>開啟 PowerShell 後，你會看到類似這樣的畫面：</p>
+          <pre><code>Windows PowerShell
+著作權 (C) Microsoft Corporation. 著作權所有，並保留一切權利。
+
+PS C:\Users\你的帳號&gt;</code></pre>
           <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
+            <code>PS</code> 是 PowerShell 的縮寫，後面接的是目前所在的路徑。
+            <code>&gt;</code> 之後就是你輸入指令的地方。
+          </p>
+          <div class="note">
+            <strong>路徑觀念：</strong>
+            <code>C:\Users\你的帳號</code> 就是你的「使用者資料夾」，
+            也叫家目錄（Home Directory）。PowerShell 開啟時預設在這裡。
+          </div>
+        </section>
+
+        <section>
+          <h2>Cmdlet：PowerShell 的指令格式</h2>
+          <p>
+            PowerShell 的指令叫做 <strong>Cmdlet</strong>（讀作 command-let），
+            命名規則是 <strong>動詞-名詞</strong>，例如：
+          </p>
+          <ul>
+            <li><code>Get-ChildItem</code>：取得（Get）子項目（ChildItem），也就是列出檔案</li>
+            <li><code>Set-Location</code>：設定（Set）位置（Location），也就是切換資料夾</li>
+            <li><code>Copy-Item</code>：複製（Copy）項目（Item）</li>
+            <li><code>Remove-Item</code>：移除（Remove）項目（Item）</li>
+            <li><code>Write-Output</code>：輸出（Write）內容（Output）到畫面</li>
+          </ul>
+          <p>
+            這種命名方式很有規律，光看名稱就能猜出用途。
+            常用的動詞有：Get、Set、New、Remove、Copy、Move、Write、Read。
+          </p>
+          <div class="note">
+            <strong>別名（Alias）：</strong>
+            很多 Cmdlet 有縮寫，例如 <code>Get-ChildItem</code> 可以寫成 <code>gci</code> 或 <code>ls</code> 或 <code>dir</code>。
+            但學習時建議先用完整名稱，比較不容易搞混。
+          </div>
+        </section>
+
+        <section>
+          <h2>物件觀念</h2>
+          <p>
+            這是 PowerShell 最重要的觀念，也是它和 cmd 最大的不同。
+          </p>
+          <p>
+            在 cmd 裡，<code>dir</code> 的輸出是一大串文字。
+            在 PowerShell 裡，<code>Get-ChildItem</code> 的輸出是一個個「物件」，
+            每個物件代表一個檔案或資料夾，帶有很多屬性。
+          </p>
+          <pre><code># 列出目前資料夾，並只顯示名稱和大小
+Get-ChildItem | Select-Object Name, Length
+
+# 只列出 .txt 檔
+Get-ChildItem -Filter "*.txt"
+
+# 按大小由大到小排序
+Get-ChildItem | Sort-Object Length -Descending</code></pre>
+          <p>
+            你可以對輸出的物件做篩選、排序、計算，這就是物件導向的好處。
           </p>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>管線（Pipeline）</h2>
+          <p>
+            管線符號 <code>|</code> 可以把前一個指令的輸出，送給下一個指令當作輸入。
+            這是 PowerShell 最強大的功能之一。
+          </p>
+          <pre><code># 列出檔案，篩選大於 1MB 的，再按大小排序
+Get-ChildItem | Where-Object { $_.Length -gt 1MB } | Sort-Object Length -Descending
+
+# 取得執行中的服務，只顯示名稱
+Get-Service | Select-Object Name, Status | Where-Object { $_.Status -eq "Running" }</code></pre>
+          <div class="note">
+            <strong>讀法：</strong>先執行左邊，結果傳給右邊，再繼續處理。
+            就像工廠流水線，每個站點做一件事。
+          </div>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>取得說明文件</h2>
+          <p>不知道某個指令怎麼用？PowerShell 有內建說明：</p>
+          <pre><code># 查詢 Get-ChildItem 的說明
+Get-Help Get-ChildItem
+
+# 查詢說明並顯示範例
+Get-Help Get-ChildItem -Examples
+
+# 在視窗中顯示完整說明
+Get-Help Get-ChildItem -ShowWindow</code></pre>
+          <div class="note">
+            <strong>第一次使用 Get-Help：</strong>
+            系統可能提示你更新說明文件，輸入 <code>Update-Help</code> 即可（需要網路）。
+          </div>
+        </section>
 
         <div class="warning">
           <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
+          指令名稱大小寫其實不影響執行（PowerShell 不分大小寫），
+          但 <code>get-childitem</code> 和 <code>Get-ChildItem</code> 都可以，
+          建議習慣用大寫開頭，讀起來比較清楚。
         </div>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          開啟 PowerShell，依序嘗試以下指令：
+          <ol>
+            <li><code>Get-ChildItem</code>：看看你家目錄有什麼</li>
+            <li><code>Get-ChildItem | Sort-Object Length -Descending</code>：按大小排序</li>
+            <li><code>Get-Help Get-ChildItem -Examples</code>：看看說明文件長什麼樣</li>
+          </ol>
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            PowerShell 的指令格式是動詞-名詞，輸出的是物件而非純文字，
+            用管線 <code>|</code> 可以串接指令做更複雜的操作。
+            這三個核心觀念，是後面所有章節的基礎。
+          </p>
+          <p>下一章，我們正式開始操作。</p>
         </section>
 
         <nav class="chapter-nav">

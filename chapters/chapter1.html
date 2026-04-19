@@ -44,49 +44,117 @@
         <section>
           <h2>本章重點</h2>
           <ul>
-            <li>認識本章核心概念</li>
-            <li>理解 PowerShell 的實際用途</li>
-            <li>先會用，再慢慢學更深</li>
+            <li>了解 PowerShell 是什麼、從哪裡來</li>
+            <li>知道 PowerShell 和命令提示字元（cmd）有什麼不同</li>
+            <li>理解為什麼 Windows 使用者值得學 PowerShell</li>
+            <li>知道 PowerShell 可以做到哪些事</li>
           </ul>
         </section>
 
         <section>
-          <h2>觀念說明</h2>
+          <h2>PowerShell 是什麼？</h2>
           <p>
-            這一章是教材模板頁。你可以依照本章主題補上完整教學內容，
-            包含白話解釋、範例指令、常見錯誤與練習題。
+            PowerShell 是微軟開發的一套命令列工具與腳本語言，內建於 Windows。
+            你可以把它想成「更強大的命令提示字元」，不只能輸入指令，
+            還能寫程式、自動化工作、管理系統。
           </p>
+          <p>現在的 PowerShell 有兩個版本：</p>
+          <ul>
+            <li><strong>Windows PowerShell 5.1</strong>：內建於 Windows 10/11，已經夠用</li>
+            <li><strong>PowerShell 7+</strong>：跨平台新版本，Windows、macOS、Linux 都可以用</li>
+          </ul>
+          <div class="note">
+            <strong>初學者建議：</strong>
+            先用 Windows 內建的 PowerShell 5.1 學就好，不需要特別安裝。
+          </div>
         </section>
 
         <section>
-          <h2>範例指令</h2>
-          <pre><code>Get-ChildItem
-Set-Location .
-Write-Output "Hello PowerShell"</code></pre>
+          <h2>PowerShell 和 cmd 有什麼不同？</h2>
+          <p>很多人第一次聽到 PowerShell 會問：「我用 cmd 就夠了，為什麼要換？」</p>
+          <p>兩者最大的差別是：</p>
+          <ul>
+            <li><strong>cmd</strong> 處理的是純文字，輸出的是一行行文字</li>
+            <li><strong>PowerShell</strong> 處理的是「物件」，輸出有結構、可以進一步操作</li>
+          </ul>
+          <p>
+            舉個例子：用 cmd 列出檔案，你只能看到文字結果。
+            用 PowerShell 列出檔案，你可以直接取得每個檔案的大小、修改日期、名稱，
+            然後用來排序、篩選或其他操作。
+          </p>
+          <div class="note">
+            <strong>物件觀念：</strong>
+            把物件想像成一張表格，每一列是一筆資料，每一欄是一個屬性。
+            PowerShell 讓你可以對這張表格做各種操作。
+          </div>
         </section>
 
-        <div class="note">
-          <strong>小提醒：</strong>
-          PowerShell 不只是文字命令列，它也會處理物件。
-        </div>
+        <section>
+          <h2>PowerShell 可以做什麼？</h2>
+          <p>以下是一些實際用途，從簡單到進階：</p>
+          <ul>
+            <li>查看資料夾內容、搜尋檔案</li>
+            <li>批次改名、複製、搬移、刪除檔案</li>
+            <li>查詢系統資訊（記憶體、CPU、磁碟）</li>
+            <li>自動整理下載資料夾</li>
+            <li>定期備份特定資料夾</li>
+            <li>遠端管理其他電腦</li>
+            <li>自動化重複性 IT 工作</li>
+          </ul>
+          <div class="note">
+            <strong>初學者先專注在前三項就好。</strong>
+            後面的進階用途，等你熟悉基本操作後自然就會想去探索。
+          </div>
+        </section>
+
+        <section>
+          <h2>為什麼值得學？</h2>
+          <p>三個理由：</p>
+          <ol>
+            <li><strong>節省時間</strong>：一個腳本可以把你本來要做 30 分鐘的事，縮短到 30 秒。</li>
+            <li><strong>減少出錯</strong>：手動操作容易漏掉或按錯，腳本每次都做一樣的事。</li>
+            <li><strong>學會就帶著走</strong>：PowerShell 是通用技能，換工作、換電腦都能繼續用。</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>範例指令（先看看長什麼樣）</h2>
+          <p>不用現在就完全理解，先感受一下 PowerShell 的樣子：</p>
+          <pre><code># 列出目前資料夾的所有檔案
+Get-ChildItem
+
+# 查詢電腦名稱
+$env:COMPUTERNAME
+
+# 查詢目前的 PowerShell 版本
+$PSVersionTable.PSVersion</code></pre>
+        </section>
 
         <div class="warning">
-          <strong>常見錯誤：</strong>
-          路徑打錯、指令拼錯、權限不足，都是初學者常見問題。
+          <strong>常見誤解：</strong>
+          很多人以為 PowerShell 很難、只有工程師才用。其實日常操作只需要幾個指令，
+          學會基本用法的門檻比你想像的低很多。
         </div>
 
         <div class="exercise">
           <strong>小練習：</strong>
-          嘗試用 PowerShell 查看目前資料夾內容，並切換到另一個資料夾。
+          在 Windows 搜尋列輸入「PowerShell」，找到並開啟 Windows PowerShell。
+          看到提示符號 <code>PS C:\Users\...&gt;</code> 出現，就成功了。
+          試著輸入 <code>$PSVersionTable.PSVersion</code> 然後按 Enter，看看你的版本號碼。
         </div>
 
         <section>
           <h2>小結</h2>
-          <p>先理解核心，再累積操作經驗，會比一開始硬背所有語法更有效。</p>
+          <p>
+            PowerShell 是 Windows 內建的強大工具，比 cmd 更現代、更靈活。
+            它處理物件而非純文字，讓你可以做更多事。
+            從日常操作到系統自動化，學會 PowerShell 可以大幅提升工作效率。
+          </p>
+          <p>下一章，我們來認識 PowerShell 的介面與核心觀念。</p>
         </section>
 
         <nav class="chapter-nav">
-          <a href="../index.html">← 上一章</a>
+          <a href="../index.html">← 返回首頁</a>
           <a href="chapter2.html">下一章 →</a>
         </nav>
       </article>
